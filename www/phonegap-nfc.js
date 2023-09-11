@@ -9,7 +9,7 @@ function handleNfcFromIntentFilter() {
     // addConstructor was finishing *before* deviceReady was complete and the
     // ndef listeners had not been registered.
     // It seems like there should be a better solution.
-    if (cordova.platformId === "android" || cordova.platformId === "windows") {
+    if (cordova.platformId === "android") {
         setTimeout(
             function () {
                 cordova.exec(
@@ -121,14 +121,11 @@ var ndef = {
      * For example a SOAP message could use "http://schemas.xmlsoap.org/soap/envelope/"
      * as the type and XML content for the payload.
      *
-     * Absolute URI can also be used to write LaunchApp records for Windows.
-     *
      * See 2.4.2 Payload Type of the NDEF Specification
      * http://www.nfc-forum.org/specs/spec_list#ndefts
      *
      * Note that by default, Android will open the URI defined in the type
      * field of an Absolute URI record (TNF=3) and ignore the payload.
-     * BlackBerry and Windows do not open the browser for TNF=3.
      *
      * To write a URI as the payload use ndef.uriRecord(uri)
      *
