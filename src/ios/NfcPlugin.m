@@ -304,6 +304,8 @@
     
     if (@available(iOS 13.0, *)) {
         
+        self.keepSessionOpen = YES;
+
         if (self.shouldUseTagReaderSession) {
             NSLog(@"Using NFCTagReaderSession");
             self.nfcSession = [[NFCTagReaderSession alloc]
