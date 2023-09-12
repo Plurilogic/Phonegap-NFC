@@ -387,7 +387,10 @@
             NSLog(@"%@", message);
             session.alertMessage = @"Tag successfully read.";
             [self fireNdefEvent:message metaData:metaData];
-            [self closeSession:session];
+
+            if(!keepSessionOpen) {
+                [self closeSession:session];
+            }
         }
 
     }];
