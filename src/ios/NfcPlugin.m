@@ -388,7 +388,7 @@
             session.alertMessage = @"Tag successfully read.";
             [self fireNdefEvent:message metaData:metaData];
 
-            if(!keepSessionOpen) {
+            if(!self.keepSessionOpen) {
                 [self closeSession:session];
             }
         }
