@@ -388,7 +388,9 @@
             session.alertMessage = @"Tag successfully read.";
             [self fireNdefEvent:message metaData:metaData];
 
-            if(!self.keepSessionOpen) {
+            if(self.keepSessionOpen) {
+                [session restartPolling];
+            } else {
                 [self closeSession:session];
             }
         }
