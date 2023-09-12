@@ -236,6 +236,31 @@
     
 }
 
+- (void) readerSession:(NFCNDEFReaderSession *)session didDetect:(NSArray<__kindof id<NFCNDEFTag>> *)tags API_AVAILABLE(ios(13.0)) {
+    
+    if (tags.count > 1) {
+        session.alertMessage = @"More than 1 tag detected. Please remove all tags and try again.";
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 500 * NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
+            NSLog(@"restaring polling");
+            [session restartPolling];
+        });
+        return;
+    }
+    
+    id<NFCNDEFTag> tag = [tags firstObject];
+    
+    [session connectToTag:tag completionHandler:^(NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"%@", error);
+            [self closeSession:session withError:@"Error connecting to tag."];
+            return;
+        }
+        
+        [self processNDEFTag:session tag:tag];
+    }];
+    
+}
+
 - (void) readerSession:(NFCNDEFReaderSession *)session didInvalidateWithError:(NSError *)error API_AVAILABLE(ios(11.0)) {
     NSLog(@"readerSession ended");
     if (error.code == NFCReaderSessionInvalidationErrorFirstNDEFTagRead) { // not an error
